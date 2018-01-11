@@ -1,0 +1,4 @@
+[submodule "aws_utils"]
+	path = aws_utils
+	url = git@github.lanlytics.com:nisac/aws-utils.git
+	branch = master
