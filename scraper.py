@@ -1,7 +1,7 @@
 import requests
 import sys
 import time
-from aws_utils.aws_utils import s3_utils
+from aws_utils import s3_utils
 from datetime import datetime, timedelta
 from redis import StrictRedis
 
