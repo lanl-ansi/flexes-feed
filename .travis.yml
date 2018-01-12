@@ -5,7 +5,9 @@ python:
   - "3.4"
 cache: pip
 
-install: pip install -r requirements.txt
+install: 
+  - pip install -r requirements.txt
+  - pip install beautifulsoup4 lxml
 
 script: py.test --cov=scraper.py --cov=noaa_wind_scraper.py
 
