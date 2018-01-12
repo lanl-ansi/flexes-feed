@@ -1,6 +1,7 @@
 import json
 import os
 import requests
+from lanlytics_api import run_task
 from subscriber import Subscriber
 
 class WindForecastSubscriber(Subscriber):
@@ -13,22 +14,7 @@ class WindForecastSubscriber(Subscriber):
                         {'type': 'input', 'value': s3_uri}    
                     ]
                }
-        response = requests.post(api_url, json=data)
-        resp_json = response.json()
-        job_id = resp_json['job_id']
-
-        status_url = os.path.join(api_url, service, 'jobs', job_id)
-        response = requests.get(status_url)
-        resp_json = response.json()
-        job_status = resp_json['status']
-
-        while job_status not in ['completed', 'failed']:
-            response = requests.get(status_url)
-            resp_json = resp.json()
-            job_status = resp_json['status']
-            time.sleep(5)
-
-        if job_status == 'completed':
-            return
-        else:
-            raise RuntimeError(resp_json['result'])
+        try:
+            result = run_task(api_url, data)
+        except ValueError as e:
+            print(e)
