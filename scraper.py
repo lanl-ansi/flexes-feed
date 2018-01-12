@@ -1,12 +1,22 @@
+import os
 import requests
 import sys
 import time
 from aws_utils import s3_utils
 from datetime import datetime, timedelta
+from io import BytesIO
 from redis import StrictRedis
 
 REDIS_HOST = 'localhost'
 LAST_MODIFIED_CHANNEL = 'data-feeds:last-modified'
+
+class NewFile:
+    def __init__(self, url, s3_folder, filename=None, subfolder='', last_modified=datetime.utcnow()):
+        self.url = url
+        self.filename = os.path.basename(url) if filename is None else filename
+        self.s3_file = os.path.join(s3_folder, subfolder, self.filename)
+        self.last_modified = last_modified
+
 
 class Scraper:
     def __init__(self, s3_folder, channel, frequency=600):
@@ -24,13 +34,13 @@ class Scraper:
         # Scrape page and return file update information
         raise NotImplementedError('scrape method must be overridden')
 
-    def publish(self, file_url, filename=None, subfolder='', last_modified=datetime.utcnow()):
-        filename = os.path.basename(file_url) if filename is None else filename
-        s3_file = os.path.join(self.dest, subfolder, filename)
-        with requests.get(new_file, stream=True) as response_stream:
-            s3_utils.stream_to_s3(response_stream, s3_file)
-        self.db.publish(self.channel, s3_file)
-        self.db.hset(LAST_MODIFIED_CHANNEL, new_file, str(last_modified))
+    def publish(self, new_file):
+        response = requests.get(new_file.url)
+        print('Publishing {}'.format(new_file.url))
+        data = BytesIO(response.content)
+        s3_utils.stream_to_s3(data, new_file.s3_file)
+        self.db.publish(self.channel, new_file.s3_file)
+        self.db.hset(LAST_MODIFIED_CHANNEL, new_file.url, str(new_file.last_modified))
 
     def last_modified(self, filename):
         # Create key in last-modified store 
@@ -52,7 +62,7 @@ class Scraper:
                     self.publish(f)
                 time.sleep(self.frequency)
         except KeyboardInterrupt:
-            print('Stopping scraper')
+            print('\rStopping scraper')
             sys.exit()
         except Exception as e:
             # Send notification that scraper encountered an exception
