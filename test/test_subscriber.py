@@ -4,6 +4,7 @@ sys.path.append('')
 
 import mock
 from datetime import datetime
+from redis import StrictRedis
 from subscriber import Subscriber
 
 class DummySubscriber(Subscriber):
@@ -24,8 +25,7 @@ class TestSubscriber:
     def test_process(self):
         assert(self.good_sub.process())
 
-    def test_subscribe(self):
-        self.good_sub.db.pubsub.return_value.listen.return_value = [{'data': b's3://bucket/path/to/file'}]
+    @mock.patch('time.sleep', side_effect=InterruptedError)
+    def test_subscribe(self, mock_sleep):
         self.good_sub.subscribe()
-        self.good_sub.db.pubsub.return_value.subscribe.assert_called_with(self.channel)
         self.good_sub.db.pubsub.return_value.close.assert_called()

@@ -1,4 +1,5 @@
 import sys
+import time
 from redis import StrictRedis
 
 REDIS_HOST = 'localhost'
@@ -11,16 +12,21 @@ class Subscriber:
     def process(self):
         raise NotImplementedError('process method must be overridden')
 
-    def subscribe(self):
-        try:
-            p = self.db.pubsub(ignore_subscribe_messages=True)
-            p.subscribe(self.channel)
-            for message in p.listen():
+    def message_handler(self, message):
                 s3_uri = message['data'].decode()
                 print('{} published a new file {}'.format(self.channel, s3_uri))
                 self.process(s3_uri)
+
+    def subscribe(self):
+        try:
+            p = self.db.pubsub(ignore_subscribe_messages=True)
+            p.subscribe(**{self.channel: self.message_handler})
+            while True:
+                message = p.get_message()
+                time.sleep(0.01)
+
         except KeyboardInterrupt:
-            print('Stopping subscriber')
+            print('\rStopping subscriber')
             sys.exit()
         except Exception as e:
             print(e)
