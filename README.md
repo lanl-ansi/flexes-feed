@@ -35,3 +35,26 @@ if __name__ == '__main__':
 ```
 
 See [noaa_wind_scraper.py](noaa_wind_scraper.py) for a real example.
+
+## Subscriber Usage
+To create a new subscriber simply create a class that inherits from the `Subscriber` class and override the `process()` method.
+
+Here is a quick pseduo example:
+
+```python
+from subscriber import Subscriber
+
+class MySubscriber(Subscriber):
+  def process(self, s3_uri):
+    # Process file(s) in s3_uri
+    
+def subscribe():
+  channel = 'http://somedata.com'
+  sub = MySubscriber(channel)
+  sub.subscribe()
+  
+if __name__ == '__main__':
+  subscribe()
+```
+  
+See [noaa_wind_subscriber.py](noaa_wind_subscriber.py) for a real example using the lanlytics API.
