@@ -39,3 +39,9 @@ class TestScraper:
         last_modified = self.good_scraper.last_modified('http://foo.com/file.txt')
         assert(last_modified == datetime(2000,1,1))
 
+    @mock.patch('time.sleep', side_effect=InterruptedError)
+    def test_run(self, mock_sleep):
+        self.good_scraper.check = mock.MagicMock(return_value=['new_file'])
+        self.good_scraper.publish = mock.MagicMock()
+        self.good_scraper.run()
+        self.good_scraper.publish.assert_called()
