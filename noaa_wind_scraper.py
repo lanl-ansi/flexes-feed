@@ -20,7 +20,7 @@ class WindForecastScraper(Scraper):
             if date_modified > self.last_modified(file_url):
                 d = datetime.strftime(date_modified, '%Y%d%m%H%M')
                 filename = '_'.join([forecast.location, forecast.period, d, 'ds.wspd.bin'])
-                new_file = NewFile(file_url, self.dest, filename=filename, last_modified=date_modified)
+                new_file = NewFile(file_url, self.s3_folder, filename=filename, last_modified=date_modified)
                 new_files.append(new_file)
         return new_files
 
