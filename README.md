@@ -1,28 +1,25 @@
 # data-feed
-[![Build Status](https://ci.lanlytics.com/arnold/data-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/arnold/data-feed) [![codecov](https://cov.lanlytics.com/ghe/arnold/data-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/arnold/data-feed)
+[![Build Status](https://ci.lanlytics.com/arnold/data-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/arnold/data-feed) 
+[![codecov](https://cov.lanlytics.com/ghe/arnold/data-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/arnold/data-feed)
 
 Generic structure for retrieving and processing regularly updated data from the web 
 
 ## Scraper Usage
-To create a new scraper simply create a class that inherits from the `Scraper` class and override the `check()` and `scrape()` methods.
+To create a new scraper simply create a class that inherits from the `Scraper` class 
+and override the `check()` method.
 
 Here is a quick pseudo example:
 
 ```python
 import requests
-from scraper import Scraper
+from scraper import NewFile, Scraper
 
 class MyScraper(Scraper):
   def check(self):
     response = requests.get(self.channel)
-    info = self.scrape(response)
-    
-    # If the file has changed return the URL
-    return file_url
-    
-   def scrape(self, response):
-    # Scrape response content
-    # Return useful information
+    # Parse content from page 
+    # If the file has changed return a NewFile object
+    return NewFile(file_url, self.s3_folder)
     
 def run_scraper():
   s3_folder = 's3://bucket/path/to/store/data'
@@ -37,7 +34,8 @@ if __name__ == '__main__':
 See [noaa_wind_scraper.py](noaa_wind_scraper.py) for a real example.
 
 ## Subscriber Usage
-To create a new subscriber simply create a class that inherits from the `Subscriber` class and override the `process()` method.
+To create a new subscriber simply create a class that inherits from the `Subscriber` 
+class and override the `process()` method.
 
 Here is a quick pseduo example:
 
@@ -57,4 +55,5 @@ if __name__ == '__main__':
   subscribe()
 ```
   
-See [noaa_wind_subscriber.py](noaa_wind_subscriber.py) for a real example using the lanlytics API.
+See [noaa_wind_subscriber.py](noaa_wind_subscriber.py) for a real example using the 
+lanlytics API.
