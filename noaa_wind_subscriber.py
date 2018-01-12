@@ -9,10 +9,11 @@ class WindForecastSubscriber(Subscriber):
         api_url = 'https://api.lanlytics.com'
         service = 'ep-damage'
         data = {'service': service,
-                'command':
+                'command': {
                     'arguments': [
                         {'type': 'input', 'value': s3_uri}    
                     ]
+                }
                }
         try:
             result = run_task(api_url, data)
