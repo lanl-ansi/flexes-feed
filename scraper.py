@@ -10,7 +10,6 @@ LAST_MODIFIED_CHANNEL = 'data-feeds:last-modified'
 
 class Scraper:
     def __init__(self, s3_folder, channel, frequency=600):
-        print('class init')
         self.dest = s3_folder
         self.channel = channel
         self.frequency = frequency
