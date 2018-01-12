@@ -28,13 +28,6 @@ class TestScraper:
     def test_check(self):
         assert(self.good_scraper.check())
 
-    def test_scrape_not_implemented(self):
-        with pytest.raises(NotImplementedError):
-            self.bad_scraper.scrape()
-
-    def test_scrape(self):
-        assert(self.good_scraper.scrape())
-    
     def test_last_modified(self):
         self.good_scraper.db.hexists.return_value = True
         self.good_scraper.db.hget.return_value = b'2003-04-01 00:00:00'

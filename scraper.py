@@ -20,7 +20,7 @@ class NewFile:
 
 class Scraper:
     def __init__(self, s3_folder, channel, frequency=600):
-        self.dest = s3_folder
+        self.s3_folder = s3_folder
         self.channel = channel
         self.frequency = frequency
         self.db = StrictRedis(REDIS_HOST)
@@ -29,10 +29,6 @@ class Scraper:
         # Track last file update
         # Return list of new files
         raise NotImplementedError('check method must be overridden')
-
-    def scrape(self):
-        # Scrape page and return file update information
-        raise NotImplementedError('scrape method must be overridden')
 
     def publish(self, new_file):
         response = requests.get(new_file.url)
