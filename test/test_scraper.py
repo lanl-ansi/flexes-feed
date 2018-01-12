@@ -38,10 +38,10 @@ class TestScraper:
     def test_last_modified(self):
         self.good_scraper.db.hexists.return_value = True
         self.good_scraper.db.hget.return_value = b'2003-04-01 00:00:00'
-        last_modified = self.scraper.last_modified('http://foo.com/file.txt')
+        last_modified = self.good_scraper.last_modified('http://foo.com/file.txt')
         assert(last_modified == datetime(2003,4,1))
 
-    def test_last_modified(self):
+    def test_last_modified_not_exist(self):
         self.good_scraper.db.hexists.return_value = False
         last_modified = self.good_scraper.last_modified('http://foo.com/file.txt')
         assert(last_modified == datetime(2000,1,1))
