@@ -1,6 +1,6 @@
 # data-feed
-[![Build Status](https://ci.lanlytics.com/arnold/data-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/arnold/data-feed) 
-[![codecov](https://cov.lanlytics.com/ghe/arnold/data-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/arnold/data-feed)
+[![Build Status](https://ci.lanlytics.com/nisac/data-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/arnold/data-feed) 
+[![codecov](https://cov.lanlytics.com/ghe/nisac/data-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/arnold/data-feed)
 
 Generic structure for retrieving and processing regularly updated data from the web 
 
@@ -19,7 +19,7 @@ class MyScraper(Scraper):
     response = requests.get(self.channel)
     # Parse content from page 
     # If the file has changed return a NewFile object
-    return NewFile(file_url, self.s3_folder)
+    return [NewFile(file_url, self.s3_folder)]
     
 def run_scraper():
   s3_folder = 's3://bucket/path/to/store/data'
