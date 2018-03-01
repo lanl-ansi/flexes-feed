@@ -31,7 +31,9 @@ if __name__ == '__main__':
   run_scraper()
 ```
 
-See [noaa_wind_scraper.py](noaa_wind_scraper.py) for a real example.
+See [noaa_wind_scraper.py](noaa_wind_scraper.py) for a real example. The example
+also requires that `BeautifulSoup4` and `lxml` are installed. To install, simply
+run `pip install BeautifulSoup4 lxml`.
 
 ## Subscriber Usage
 To create a new subscriber simply create a class that inherits from the `Subscriber` 
