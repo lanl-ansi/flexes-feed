@@ -18,20 +18,19 @@ class Subscriber:
                 self.process(s3_uri)
 
     def subscribe(self):
-        try:
             p = self.db.pubsub(ignore_subscribe_messages=True)
             p.subscribe(**{self.channel: self.message_handler})
             while True:
-                message = p.get_message()
-                time.sleep(0.01)
-
-        except KeyboardInterrupt:
-            print('\rStopping subscriber')
-            sys.exit()
-        except Exception as e:
-            print(e)
-            # Send notification that subscriber encountered an exception
-        finally:
-            p.close()
+                try:
+                    message = p.get_message()
+                    time.sleep(1)
+                except KeyboardInterrupt:
+                    print('\rStopping subscriber')
+                    sys.exit()
+                except Exception as e:
+                    print(e)
+                    # Send notification that subscriber encountered an exception
+                finally:
+                    p.close()
 
         
