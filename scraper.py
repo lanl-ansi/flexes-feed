@@ -54,15 +54,15 @@ class Scraper:
         return date_modified
 
     def run(self):
-        try:
-            while True:
+        while True:
+            try:
                 new_files = self.check()
                 for f in new_files:
                     self.publish(f)
                 time.sleep(self.frequency)
-        except KeyboardInterrupt:
-            print('\rStopping scraper')
-            sys.exit()
-        except Exception as e:
-            # Send notification that scraper encountered an exception
-            print(e)
+            except KeyboardInterrupt:
+                print('\rStopping scraper')
+                sys.exit()
+            except Exception as e:
+                # Send notification that scraper encountered an exception
+                print(e)
