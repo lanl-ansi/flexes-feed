@@ -30,14 +30,14 @@ class Scraper:
         # Return list of new files
         raise NotImplementedError('check method must be overridden')
 
-    def download_file(new_file):
+    def download_file(self, new_file):
         response = requests.get(new_file.url)
         print('Publishing {}'.format(new_file.url))
         data = BytesIO(response.content)
         s3_utils.stream_to_s3(data, new_file.s3_file)
 
     def publish(self, new_file):
-        download_file(new_file)
+        self.download_file(new_file)
         self.db.publish(self.channel, new_file.s3_file)
         self.db.hset(LAST_MODIFIED_CHANNEL, new_file.url, str(new_file.last_modified))
 
