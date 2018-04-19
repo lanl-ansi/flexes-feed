@@ -11,7 +11,7 @@ REDIS_HOST = 'localhost'
 LAST_MODIFIED_CHANNEL = 'data-feeds:last-modified'
 
 class NewFile:
-    def __init__(self, url, s3_folder, filename=None, subfolder='', last_modified=datetime.utcnow()):
+    def __init__(self, url, s3_folder, filename=None, subfolder='', last_modified=None):
         self.url = url
         self.filename = os.path.basename(url) if filename is None else filename
         self.s3_file = os.path.join(s3_folder, subfolder, self.filename)
@@ -33,13 +33,13 @@ class Scraper:
     def download_file(self, new_file):
         response = requests.get(new_file.url)
         print('Publishing {}'.format(new_file.url))
-        data = BytesIO(response.content)
-        s3_utils.stream_to_s3(data, new_file.s3_file)
+        s3_utils.stream_to_s3(response.raw, new_file.s3_file)
 
     def publish(self, new_file):
         self.download_file(new_file)
         self.db.publish(self.channel, new_file.s3_file)
-        self.db.hset(LAST_MODIFIED_CHANNEL, new_file.url, str(new_file.last_modified))
+        if new_file.last_modified is not None:
+            self.db.hset(LAST_MODIFIED_CHANNEL, new_file.url, str(new_file.last_modified))
 
     def last_modified(self, filename):
         # Create key in last-modified store 

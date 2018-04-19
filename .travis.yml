@@ -1,4 +1,5 @@
 language: python
+dist: trusty
 python:
   - "3.6"
   - "3.5"
@@ -12,4 +13,4 @@ install:
 script: py.test --cov=scraper.py --cov=subscriber.py --cov=noaa_wind_scraper.py
 
 after_success:
-  - bash <(curl -s https://cov.lanlytics.com/bash) -t "zvYVxfDUQ2Swtbv11JFS" -r arnold/data-feed
+  - bash <(curl -s https://cov.lanlytics.com/bash) -t "zvYVxfDUQ2Swtbv11JFS" -r nisac/data-feed
