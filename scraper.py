@@ -4,8 +4,9 @@ import sys
 import time
 from aws_utils import s3_utils
 from datetime import datetime, timedelta
-from io import BytesIO
 from redis import StrictRedis
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 REDIS_HOST = 'localhost'
 LAST_MODIFIED_CHANNEL = 'data-feeds:last-modified'
@@ -31,7 +32,13 @@ class Scraper:
         raise NotImplementedError('check method must be overridden')
 
     def download_file(new_file):
-        response = requests.get(new_file.url, stream=True)
+        session = requests.Session()
+        retry = Retry(total=3, read=3, connect=3, 
+                      backoff_factor=0.3, status_forcelist=(500,502,504))
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        response = session.get(new_file.url, stream=True)
         print('Publishing {}'.format(new_file.url))
         s3_utils.stream_to_s3(response.raw, new_file.s3_file)
 
