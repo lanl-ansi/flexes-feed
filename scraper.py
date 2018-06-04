@@ -24,7 +24,7 @@ class Scraper:
         self.s3_folder = s3_folder
         self.channel = channel
         self.frequency = frequency
-        self.db = StrictRedis(REDIS_HOST)
+        self.db = StrictRedis(REDIS_HOST, decode_responses=True)
 
     def check(self):
         # Track last file update
@@ -49,15 +49,8 @@ class Scraper:
             self.db.hset(LAST_MODIFIED_CHANNEL, new_file.url, str(new_file.last_modified))
 
     def last_modified(self, filename):
-        # Create key in last-modified store 
-        # if it doesn't already exist set it 
-        # to 2000-01-01 00:00:00
-        if self.db.hexists(LAST_MODIFIED_CHANNEL, filename):
-            t = self.db.hget(LAST_MODIFIED_CHANNEL, filename).decode()
-            date_modified = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
-        else:
-            date_modified = datetime(2000, 1, 1)
-            self.db.hset(LAST_MODIFIED_CHANNEL, filename, str(date_modified))
+        t = self.db.hget(LAST_MODIFIED_CHANNEL, filename)
+        date_modified = datetime.strptime(t, '%Y-%m-%d %H:%M:%S') if t is not None else None
         return date_modified
 
     def run(self):
