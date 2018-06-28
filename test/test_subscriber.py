@@ -25,7 +25,8 @@ class TestSubscriber:
     def test_process(self):
         assert(self.good_sub.process())
 
-    @mock.patch('time.sleep', side_effect=InterruptedError)
+    @mock.patch('time.sleep', side_effect=KeyboardInterrupt)
     def test_subscribe(self, mock_sleep):
-        self.good_sub.subscribe()
-        self.good_sub.db.pubsub.return_value.close.assert_called()
+        with pytest.raises(SystemExit) as e:
+            self.good_sub.subscribe()
+            self.good_sub.db.pubsub.return_value.close.assert_called()
