@@ -12,11 +12,11 @@ class DummySubscriber(Subscriber):
         return True
 
 class TestSubscriber:
-    def setup_method(self, _):
+    @mock.patch('subscriber.StrictRedis')
+    def setup_method(self, _, mock_db):
         self.channel = 'test-data-feed'
         self.bad_sub = Subscriber(channel=self.channel)
         self.good_sub = DummySubscriber(channel=self.channel)
-        self.good_sub.db = mock.MagicMock()
 
     def test_process_not_implemented(self):
         with pytest.raises(NotImplementedError):
