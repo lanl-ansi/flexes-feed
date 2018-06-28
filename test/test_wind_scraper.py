@@ -14,9 +14,9 @@ class TestWindForecastScraper:
             self.response_content = f.read()
         s3_folder = 's3://lanlytics/test/folder'
         channel = 'http://path/to/data'
-        self.scraper = WindForecastScraper(s3_folder, channel)
+        self.scraper = WindForecastScraper(s3_folder=s3_folder, channel=channel)
         self.scraper.db = mock.MagicMock()
-        self.scraper.db.hexists.return_value = False
+        self.scraper.db.hget.return_value = datetime.strftime(datetime(2018,1,11), '%Y-%m-%d %H:%M:%S')
 
     @mock.patch('requests.get')
     def test_check(self, mock_get):

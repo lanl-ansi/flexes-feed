@@ -14,8 +14,8 @@ class DummySubscriber(Subscriber):
 class TestSubscriber:
     def setup_method(self, _):
         self.channel = 'test-data-feed'
-        self.bad_sub = Subscriber(self.channel)
-        self.good_sub = DummySubscriber(self.channel)
+        self.bad_sub = Subscriber(channel=self.channel)
+        self.good_sub = DummySubscriber(channel=self.channel)
         self.good_sub.db = mock.MagicMock()
 
     def test_process_not_implemented(self):
