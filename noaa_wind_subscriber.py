@@ -1,8 +1,8 @@
 import json
 import os
 import requests
-from lanlytics_api.job import run_task
-from subscriber import Subscriber
+from lanlytics_api_lib.job import run_task
+from data_feed.subscriber import Subscriber
 
 class WindForecastSubscriber(Subscriber):
     def process(self, s3_uri):

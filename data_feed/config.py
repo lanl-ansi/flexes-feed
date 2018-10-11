@@ -1,8 +1,10 @@
 import json
+import os
 from pathlib import Path
 
 def load_config(config_path='config.json'):
-    default = Path('default_config.json')
+    default_path = os.path.join(os.path.dirname(__file__), 'default_config.json')
+    default = Path(default_path)
     with default.open() as f:
         config = json.load(f)
 

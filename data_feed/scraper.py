@@ -3,8 +3,8 @@ import requests
 import signal
 import sys
 import time
-from aws_utils import s3_utils
-from config import load_config
+#from aws_utils import s3_utils
+from .config import load_config
 from datetime import datetime, timedelta
 from redis import StrictRedis
 from requests.adapters import HTTPAdapter
@@ -40,7 +40,7 @@ class Scraper:
         session.mount('https://', adapter)
         response = session.get(new_file.url, stream=True)
         print('Publishing {}'.format(new_file.url))
-        s3_utils.stream_to_s3(response.raw, new_file.s3_file)
+#        s3_utils.stream_to_s3(response.raw, new_file.s3_file)
 
     def publish(self, new_file):
         self.download_file(new_file)

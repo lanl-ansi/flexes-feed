@@ -2,7 +2,7 @@ import boto3
 import signal
 import sys
 import time
-from config import load_config
+from .config import load_config
 from redis import StrictRedis
 
 class Subscriber:
