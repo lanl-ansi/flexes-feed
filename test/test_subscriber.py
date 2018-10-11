@@ -1,18 +1,16 @@
 import os, pytest, sys
 
-sys.path.append('')
-
 import mock
 from datetime import datetime
 from redis import StrictRedis
-from subscriber import Subscriber
+from data_feed.subscriber import Subscriber
 
 class DummySubscriber(Subscriber):
     def process(self):
         return True
 
 class TestSubscriber:
-    @mock.patch('subscriber.StrictRedis')
+    @mock.patch('data_feed.subscriber.StrictRedis')
     def setup_method(self, _, mock_db):
         self.channel = 'test-data-feed'
         self.bad_sub = Subscriber(channel=self.channel)

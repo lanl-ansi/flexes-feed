@@ -1,10 +1,8 @@
 import os, pytest, sys
 
-sys.path.append('')
-
 import mock
 from datetime import datetime
-from scraper import Scraper
+from data_feed.scraper import Scraper
 
 class DummyScraper(Scraper):
     def check(self):
