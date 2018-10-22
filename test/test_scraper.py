@@ -1,8 +1,12 @@
 import os, pytest, sys
 
 import mock
+import time
 from datetime import datetime
 from data_feed.scraper import Scraper
+from signal import SIGTERM
+from threading import Thread
+
 
 class DummyScraper(Scraper):
     def check(self):
@@ -37,6 +41,25 @@ class TestScraper:
     def test_run(self, mock_sleep):
         self.good_scraper.check = mock.MagicMock(return_value=['new_file'])
         self.good_scraper.publish = mock.MagicMock()
-        with pytest.raises(SystemExit) as e:
+        with pytest.raises(SystemExit):
             self.good_scraper.run()
             self.good_scraper.publish.assert_called()
+
+    @mock.patch('time.sleep')
+    def test_run_SIGTERM(self, mock_sleep):
+        pid = os.getpid()
+        def trigger_signal():
+            while len(mock_sleep.mock_calls) < 1:
+                time.sleep(0.2)
+            os.kill(pid, SIGTERM)
+
+        self.good_scraper.check = mock.MagicMock(return_value=['new_file'])
+        self.good_scraper.publish = mock.MagicMock()
+        
+        with pytest.raises(SystemExit):
+            thread = Thread(target=trigger_signal)
+            thread.daemon = True
+            thread.start()
+
+            self.good_scraper.run()
+            self.good_scraper.gracefully_exit.assert_called()
