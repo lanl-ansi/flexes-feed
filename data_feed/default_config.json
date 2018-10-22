@@ -1,5 +1,6 @@
 {
-  "REDIS_HOST": "localhost",
+  "ERROR_LIMIT": 5,
   "LAST_MODIFIED_CHANNEL": "data-feeds:last-modified",
+  "REDIS_HOST": "localhost",
   "SNS_TOPIC": null
 }
