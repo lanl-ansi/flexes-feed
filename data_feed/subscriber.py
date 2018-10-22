@@ -36,6 +36,8 @@ class Subscriber:
         print('SIGTERM received')
         if self.config['SNS_TOPIC']:
             self.report_error('Subscriber terminated')
+        self.sub.close()
+        sys.exit(signo)
 
     def subscribe(self):
         signal.signal(signal.SIGTERM, self.gracefully_exit) 

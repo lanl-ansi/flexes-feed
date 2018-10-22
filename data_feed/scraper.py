@@ -63,6 +63,7 @@ class Scraper:
         print('SIGTERM received')
         if self.config['SNS_TOPIC']: 
             self.report_error('Scraper terminated')
+        sys.exit(signo)
 
     def run(self):
         signal.signal(signal.SIGTERM, self.gracefully_exit) 
