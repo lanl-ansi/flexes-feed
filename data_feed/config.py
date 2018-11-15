@@ -12,6 +12,9 @@ def load_config(config_path='config.json'):
         config_path (str): Path to the user defined configuration variables. These 
             variables will override the library's default configuration values. The 
             default configuration path is `./config.json`.
+
+    Returns:
+        dict: A dictionary containing configuration variables
     """
     default_path = os.path.join(os.path.dirname(__file__), 'default_config.json')
     default = Path(default_path)
