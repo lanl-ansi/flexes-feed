@@ -21,7 +21,8 @@ class TestSubscriber:
 
     def test_process_not_implemented(self):
         with pytest.raises(NotImplementedError):
-            self.bad_sub.process()
+            s3_uri = 's3://path/to/test.txt'
+            self.bad_sub.process(s3_uri)
 
     def test_process(self):
         assert(self.good_sub.process())
