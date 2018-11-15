@@ -40,8 +40,8 @@ class Scraper:
         s3_folder (str): Default location for new files (e.g., s3://bucket/path/to/folder)
         frequency (float): Time (in seconds) between checking for new files (default 600)
     """
-    self.config = load_config()
     def __init__(self, *args, **kwargs):
+        self.config = load_config()
         self.channel = kwargs['channel']
         self.s3_folder = kwargs['s3_folder']
         self.frequency = kwargs.get('frequency', 600)
