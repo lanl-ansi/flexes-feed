@@ -11,16 +11,20 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 class NewFile:
+    """Object representing a file that has been recently published by a third-party
+    and should be downloaded to S3 for further processing. This class contains
+    information about the file's original URL and where the file should be saved on
+    S3. In addition an optional timestamp can be provided to capture when the original 
+    file was last modified.
+    
+    Args:
+        url (str): URL for new file. Used to download the file to S3
+        s3_folder (str): Location on S3 to save the new file
+        filename (str): (optional) Filename for S3 file, default is the basename in the file URL
+        subfolder (str): (optional) Subfolder in s3_folder to save the file, default is s3_folder
+        last_modified (datetime): Timestamp representing the last time the file was modified (default None)
+    """
     def __init__(self, url, s3_folder, filename=None, subfolder='', last_modified=None):
-        """Constructor for NewFile data class
-        
-        Args:
-            url (str): URL for new file. Used to download the file to S3
-            s3_folder (str): Location on S3 to save the new file
-            filename (str): (optional) Filename for S3 file, default is the basename in the file URL
-            subfolder (str): (optional) Subfolder in s3_folder to save the file, default is s3_folder
-            last_modified (datetime): Timestamp representing the last time the file was modified (default None)
-        """
         self.url = url
         self.filename = os.path.basename(url) if filename is None else filename
         self.s3_file = os.path.join(s3_folder, subfolder, self.filename)
@@ -28,22 +32,24 @@ class NewFile:
 
 
 class Scraper:
+    """Base class for the data scraper. Users are required to override the `check`
+    method which includes the logic for scraping a data source.
+    
+    Args:
+        channel (str): The Redis pub/sub channel for the subscriber to publish to
+        s3_folder (str): Default location for new files (e.g., s3://bucket/path/to/folder)
+        frequency (float): Time (in seconds) between checking for new files (default 600)
+    """
+    self.config = load_config()
     def __init__(self, *args, **kwargs):
-        """Constructor for the Scraper
-        
-        Args:
-            channel (str): The Redis pub/sub channel for the subscriber to publish to
-            s3_folder (str): Default location for new files (e.g., s3://bucket/path/to/folder)
-            frequency (float): Time (in seconds) between checking for new files (default 600)
-        """
-        self.config = load_config()
         self.channel = kwargs['channel']
         self.s3_folder = kwargs['s3_folder']
         self.frequency = kwargs.get('frequency', 600)
         self.db = StrictRedis(self.config['REDIS_HOST'], decode_responses=True)
 
     def check(self):
-        """Method used to check for new files
+        """Method containing logic for scraping a data source in search for new files 
+        to publish
         
         Returns:
             new_files (list): Should return a list of NewFile objects which will be 

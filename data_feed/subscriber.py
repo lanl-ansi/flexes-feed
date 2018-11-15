@@ -6,13 +6,15 @@ from .config import load_config
 from redis import StrictRedis
 
 class Subscriber:
+    """Base class for the data feed subscriber. Users are required to override the 
+    `process` method which is passed the S3 URI when a file is published on the 
+    subscribed channel.
+    
+    Args:
+        channel (str): The Redis pub/sub channel for the subscriber to listen to
+        frequency (float): Time (in seconds) between checking for new messages (default 1.0)
+    """
     def __init__(self, *args, **kwargs):
-        """Subscriber constructor
-        
-        Args:
-            channel (str): The Redis pub/sub channel for the subscriber to listen to
-            frequency (float): Time (in seconds) between checking for new messages (default 1.0)
-        """
         self.config = load_config()
         self.channel = kwargs['channel']
         self.frequency = kwargs.get('frequency', 1)
@@ -20,8 +22,8 @@ class Subscriber:
         self.sub = self.db.pubsub(ignore_subscribe_messages=True)
         self.sub.subscribe(**{self.channel: self.message_handler})
 
-    def process(self):
-        """Method to process a message published on the subscribed channel
+    def process(self, s3_uri):
+        """Method to process a message published on the subscribed channel.
         
         Args:
             s3_uri (str): File URI published on the channel (e.g., s3://bucket/path/to/new/file.txt)
@@ -29,11 +31,17 @@ class Subscriber:
         raise NotImplementedError('process method must be overridden')
 
     def message_handler(self, message):
+        """Handler called when a new message is published on the subscribed channel"""
         s3_uri = message['data']
         print('{} published a new file {}'.format(self.channel, s3_uri))
         self.process(s3_uri)
 
     def check_for_message(self):
+        """Optional method which can be used to aggregate message information rather 
+        than operating on messages individually as through the `message_handler`. 
+        This can be useful when multiple files are pulled at the same time and the 
+        subscriber wants to wait for all of the files to be published before taking 
+        action."""
         self.sub.get_message()
 
     def report_error(self, error):
