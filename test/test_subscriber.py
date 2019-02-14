@@ -4,7 +4,7 @@ import mock
 import time
 from datetime import datetime
 from redis import StrictRedis
-from data_feed.subscriber import Subscriber
+from lanlytics_feed.subscriber import Subscriber
 from signal import SIGTERM
 from threading import Thread
 
@@ -13,7 +13,7 @@ class DummySubscriber(Subscriber):
         return True
 
 class TestSubscriber:
-    @mock.patch('data_feed.subscriber.StrictRedis')
+    @mock.patch('lanlytics_feed.subscriber.StrictRedis')
     def setup_method(self, _, mock_db):
         self.channel = 'test-data-feed'
         self.bad_sub = Subscriber(channel=self.channel)

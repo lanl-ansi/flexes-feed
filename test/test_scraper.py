@@ -3,7 +3,7 @@ import os, pytest, sys
 import mock
 import time
 from datetime import datetime
-from data_feed.scraper import Scraper
+from lanlytics_feed.scraper import Scraper
 from signal import SIGTERM
 from threading import Thread
 

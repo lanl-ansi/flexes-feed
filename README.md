@@ -1,6 +1,6 @@
-# data-feed
-[![Build Status](https://ci.lanlytics.com/nisac/data-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/nisac/data-feed) 
-[![codecov](https://cov.lanlytics.com/ghe/nisac/data-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/nisac/data-feed)
+# lanlytics-feed
+[![Build Status](https://ci.lanlytics.com/nisac/lanlytics-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/nisac/lanlytics-feed) 
+[![codecov](https://cov.lanlytics.com/ghe/nisac/lanlytics-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/nisac/lanlytics-feed)
 
 Generic structure for retrieving and processing regularly updated data from the web 
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
   run_scraper()
 ```
 
-See [noaa_wind_scraper.py](noaa_wind_scraper.py) for a real example. The example
+See [examples/noaa_wind_scraper.py](noaa_wind_scraper.py) for a real example. The example
 also requires that `BeautifulSoup4` and `lxml` are installed. To install, simply
 run `pip install BeautifulSoup4 lxml`.
 
@@ -57,5 +57,5 @@ if __name__ == '__main__':
   subscribe()
 ```
   
-See [noaa_wind_subscriber.py](noaa_wind_subscriber.py) for a real example using the 
+See [examples/noaa_wind_subscriber.py](noaa_wind_subscriber.py) for a real example using the 
 lanlytics API.

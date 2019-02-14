@@ -8,9 +8,8 @@ cache: pip
 
 install: 
   - pip install -e .[dev]
-  - pip install beautifulsoup4 lxml
 
-script: py.test --cov data_feed
+script: py.test --cov lanlytics_feed
 
 after_success:
-  - bash <(curl -s https://cov.lanlytics.com/bash) -t "zvYVxfDUQ2Swtbv11JFS" -r nisac/data-feed
+  - bash <(curl -s https://cov.lanlytics.com/bash) -t "zvYVxfDUQ2Swtbv11JFS" -r nisac/lanlytics-feed
