@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from collections import namedtuple
 from datetime import datetime
-from data_feed.scraper import NewFile, Scraper
+from flexes_feed.scraper import NewFile, Scraper
 
 Forecast = namedtuple('Forecast', ['url', 'location', 'period'])
 
