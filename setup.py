@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setuptools.setup(
-    name='lanlytics_feed',
+    name='flexes_feed',
     version='0.1.0',
     author='James Arnold',
     description='Library for setting up data processing pipelines from remote data feeds',
