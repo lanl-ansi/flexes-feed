@@ -1,6 +1,6 @@
-# lanlytics-feed
-[![Build Status](https://ci.lanlytics.com/nisac/lanlytics-feed.svg?token=RmFwLDimUxzrPXXq8Kti&branch=master)](https://ci.lanlytics.com/nisac/lanlytics-feed) 
-[![codecov](https://cov.lanlytics.com/ghe/nisac/lanlytics-feed/branch/master/graph/badge.svg)](https://cov.lanlytics.com/ghe/nisac/lanlytics-feed)
+# flexes-feed
+[![Build Status](https://travis-ci.org/lanl-ansi/flexes-feed.svg?branch=master)](https://travis-ci.org/lanl-ansi/flexes-feed) 
+[![codecov](https://codecov.io/gh/lanl-ansi/flexes-feed/branch/master/graph/badge.svg)](https://codecov.io/gh/lanl-ansi/flexes-feed)
 
 Generic structure for retrieving and processing regularly updated data from the web 
 
