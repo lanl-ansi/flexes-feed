@@ -1,7 +1,6 @@
 language: python
-dist: trusty
 python:
-  - "3.7-dev"
+  - "3.7"
   - "3.6"
   - "3.5"
 cache: pip
@@ -9,7 +8,7 @@ cache: pip
 install: 
   - pip install -e .[dev]
 
-script: py.test --cov lanlytics_feed
+script: py.test --cov flexes_feed
 
 after_success:
-  - bash <(curl -s https://cov.lanlytics.com/bash) -t "zvYVxfDUQ2Swtbv11JFS" -r nisac/lanlytics-feed
+  - codecov
