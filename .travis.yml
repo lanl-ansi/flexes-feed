@@ -1,15 +1,19 @@
 language: python
 dist: xenial
 python:
-  - "3.7"
-  - "3.6"
-  - "3.5"
+- '3.7'
+- '3.6'
+- '3.5'
 cache: pip
-
-install: 
-  - pip install -e .[dev]
-
+install:
+- pip install -e .[dev]
 script: py.test --cov flexes_feed
-
 after_success:
-  - codecov
+- codecov
+deploy:
+  provider: pypi
+  user: arnoldj
+  password:
+    secure: brl/yWOGcoOmCph4Ln0UNwf5dtUnCecHnn3WRWfNhNjaUe0t8dEUlJnjk/YLXIAqS2raBluxBH/Wc32nhispWV+Lfpcf9yP7lVs2ulV/5zL/iDjcITvuE8UD1/+TEPI3h9Lp4moiNxkv+EvgA7OtcRfQhuO9m/El9ScrJ/IILctWPqLVNdPGM/4dkxBEsHyQoJlIQILFZEYrH5WTFZto9jEATReBbge9It26uYnbmliMFat78+cBT7qX+zxI+Sb2MknQudqte28Mkvn8nrbNed22VMmMNIoZHtxup3O6GA/kePkilPDNDspsgP/urtCECGlPIrweUmR2b8iZw7BRKTIlU8/VH7LYj8htzM7Sq3t2/F8MT6UfAgJCQztWJOCt/qq3NiEFVRPhjb8VG+Dwvr9RtUCV6tOfi2IkEQzkK3mEsovryihqDQTt23FeHD7V6MF6G439xZ0eB2D9gWYK3tpalI9MQSw06fZaJdb10h44tz4+MnwbtyGX6VXfiFlnG4AEgFZ2e9P2rRdOEYIKH1sbRelOm+RaLu3rFZ/NSb6BR48xF+oKT+DOWDdg2eLq2wdbTyCeIWE06W6TFIRxV26CuYF4oo4b/dcrpgR9r1V623VO5gL0byJbeNP1Yn4U6zqpVR/e/140IwuBhnw+6NAyahOPwVSFewdt2gKxsZE=
+  on:
+    tags: true
