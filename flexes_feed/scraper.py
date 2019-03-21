@@ -3,9 +3,9 @@ import requests
 import signal
 import sys
 import time
-#from aws_utils import s3_utils
 from .config import load_config
 from datetime import datetime, timedelta
+from flexes_lib.aws.s3_utils import stream_from_s3
 from redis import StrictRedis
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -69,7 +69,7 @@ class Scraper:
         session.mount('https://', adapter)
         response = session.get(new_file.url, stream=True)
         print('Publishing {}'.format(new_file.url))
-#        s3_utils.stream_to_s3(response.raw, new_file.s3_file)
+        stream_to_s3(response.raw, new_file.s3_file)
 
     def publish(self, new_file):
         """Publish the S3 URI of the new file on the Scraper's channel"""

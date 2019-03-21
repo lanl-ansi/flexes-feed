@@ -13,6 +13,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'boto3>=1.9.94',
+        'flexes-lib',
         'redis>=2.10.6',
         'ujson>=1.35'
     ],
