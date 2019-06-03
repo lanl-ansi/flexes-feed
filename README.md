@@ -12,7 +12,7 @@ Here is a quick pseudo example:
 
 ```python
 import requests
-from data_feed.scraper import NewFile, Scraper
+from flexes_feed.scraper import NewFile, Scraper
 
 class MyScraper(Scraper):
   def check(self):
@@ -42,7 +42,7 @@ class and override the `process()` method.
 Here is a quick pseduo example:
 
 ```python
-from data_feed.subscriber import Subscriber
+from flexes_feed.subscriber import Subscriber
 
 class MySubscriber(Subscriber):
   def process(self, s3_uri):
